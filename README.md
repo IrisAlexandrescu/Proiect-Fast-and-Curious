@@ -9,11 +9,11 @@
 
 *  **Cărui tip de utilizatori se adresează produsul vostru?**
 
- Deoarece pasiunea pentru muzică nu are vârstă, alegem să ne adresam unui public cât mai larg, indiferent de gusturi, hobby-uri sau stare de spirit. :)
+   Deoarece pasiunea pentru muzică nu are vârstă, alegem să ne adresam unui public cât mai larg, indiferent de gusturi, hobby-uri sau stare de spirit. :)
 
 * **Ce alte produse similare există în piață?**
 
- Alte produse similare deja existente pe piață sunt: **Deezer, Tidal, iTunes, Zonga, SoundCloud**
+   Alte produse similare deja existente pe piață sunt: **Deezer, Tidal, iTunes, Zonga, SoundCloud**
 
 
 
