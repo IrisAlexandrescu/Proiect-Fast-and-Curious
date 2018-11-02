@@ -38,11 +38,13 @@
     POST /preferences?preferences={preferencesParam}
 
 Utilizatorul își adaugă preferințele inițiale, pentru a putea primi recomandări.
+
 **Request** 
 
     PUT /preferences?preferences={newPreferences}
 
 Utilizatorul își schimbă preferințele.
+
 **Request**
 
     GET /songs?search={weatherParam} 
