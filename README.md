@@ -5,16 +5,15 @@
 
 * **Care este principala nevoie/problemă pe care o rezolvă produsul vostru?**
 
-   Suntem de părere că muzica este o parte importantă din viața fiecăruia, astfel încât aplicația noastră are scopul de a facilita procesul de căutare a unui cântec în funcție de vreme sau de starea de spirit a utilizatorului, și apoi de a salva rapid  melodiile preferate. De aceea, noi vrem să implementăm o aplicație web pentru managementul de melodii favorite, folosind Spotify API. Totodată, noi considerăm util ca utilizatorul să cunoască mai multe detalii despre muzica aleasă, astfel încât îi punem la dispoziție o serie de statistici referitoare la aceasta. Prin intermediul lor, utilizatorul poate să vizualizeze caracteristicile audio ale compoziției precum și alte trăsături folositoare. Pentru a oferi o experiență personalizată, aplicația adaptează UI-ul în funcție de starea utilizatorului raportată la prognoză.
+   Fie ca esti vesel sau trist, ca vrei sa te distrezi sau sa inveti mai bine, muzica este resursa la care poti apela oricand. Echipa noastra, Fast&Curious, este de parere  ca muzica este o parte importanta din viata fiecaruia, asa ca ne-am gandit sa cream o aplicatie prin care utilizatorii sa aiba usor acces atat la muzica pe care o iubesc, cat si sa descopere muzica noua, potrivita cu gusturile lor. Asadar, proiectul nostru are, pe langa functia de a crea rapid playlist-uri cu melodiile preferate, si scopul de a facilita procesul de cautare al unui cantec in functie de vreme sau de starea de spirit a utilizatorului. Folosind Spotify API si Weather API, ne dorim astfel sa cream un manager de melodii favorite care sa ii poata face utilizatorului si recomandari influentate de preferintele actuale si starea de spirit pe care vremea de afara i-o poate induce. Incercam astfel sa oferim o experienta personalizata pentru fiecare utilizator – aplicatia intelegand si adaptandu-se la starea si gusturile clientului. Totodata, noi consideram util ca utilizatorul sa poata afla, daca isi doreste, detalii legate de muzica aleasa, astfel incat ii punem la dispozitie diverse statistici legate de caracteristicile audio ale pieselor, de autorii acestora si nu numai.
 
 *  **Cărui tip de utilizatori se adresează produsul vostru?**
 
-   Deoarece pasiunea pentru muzică nu are vârstă, alegem să ne adresam unui public cât mai larg, indiferent de gusturi, hobby-uri sau stare de spirit. :)
+   In acelasi timp, deoarece consideram ca pasiunea pentru muzica nu are varsta, credem ca tipul de utilizatori de care il avem in vedere nu se poate inscrie intr-un tipar, pentru ca ne dorim ca proiectul nostru sa poata fi folositor oricui, indiferent de gusturi, hobby-uri sau stare de spirit.
 
 * **Ce alte produse similare există în piață?**
 
-   Alte produse similare deja existente pe piață sunt: **Deezer, Tidal, iTunes, Zonga, SoundCloud**
-
+   Aplicatia noastra va functiona intr-un domeniu in care exista deja destul de multi competitori foarte cunoscuti, cum ar fi Apple Music, Google Play Music, Spotify, Deezer, Tidal, Zonga, SoundCloud si multi altii. Totusi, din cercetarea de piata pe care am facut-o pana acum, nu am gasit un produs care sa prezinte aceeasi functionalitate de recomandare de melodii in functie de starea utilizatorului pe care o propunem noi, asa ca noi suntem increzatori in faptul ca vom aduce un plus de valoare industriei si ca ne vom face remarcati prin serviciul nostru intuitiv la dorintele clientului, usor de folosit si gratis.
 
 
 ----
