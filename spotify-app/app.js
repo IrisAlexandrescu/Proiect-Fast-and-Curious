@@ -167,6 +167,40 @@ app.get('/createdb', (request, response) => {
         response.status(200).send('could not create tables')
     })
 })
+app.post("/users",(request,response)=>{
+  Users.create(request.body).then((result)=>(response.status(201).json(result))).catch((err)=>{response.status(500).send("Error")
+  })
+})
+app.get("/users",(request,response)=>{
+  Users.findAll().then((result)=>{response.status(200).json(result)});
+})
+app.post("/weatherTypes",(request,response)=>{
+  WeatherTypes.bulkCreate([{
+		type:"cloudy"
+	},{
+		type : 'sunny'
+	},{
+		type : 'stormy'
+	}]).then((result)=>(response.status(201).json(result))).catch((err)=>{response.status(500).send("Error")})
+})
+app.get("/weatherTypes",(request,response)=>{
+  WeatherTypes.findAll().then((result)=>{response.status(200).json(result)}).catch((err)=>{response.status(500).send(err)});
+})
+
+app.post("/tags",(request,response)=>{
+  Tags.bulkCreate([{
+		name:"instrumental"
+	},{
+		name : 'house'
+	},{
+		name : 'rock'
+	}]).then((result)=>(response.status(201).json(result))).catch((err)=>{response.status(500).send("Error")})
+})
+
+app.get("/tags",(request,response)=>{
+  Tags.findAll().then((result)=>{response.status(200).json(result)}).catch((err)=>{response.status(500).send(err)});
+})
+
 
 app.post('/userPreferences', (req, res) =>{
   const UserId = req.body.userId;
