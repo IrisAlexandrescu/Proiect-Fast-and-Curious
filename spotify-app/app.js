@@ -1,7 +1,7 @@
 var express = require('express');
 var request = require('request');
 var cors = require('cors');
-var querystring = require('querystring'); 
+var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const Sequelize = require('sequelize')
@@ -9,9 +9,9 @@ const Sequelize = require('sequelize')
 const sequelize = new Sequelize('spotify_database', 'root', '', {
     dialect: "mysql",
     host: "localhost",
-    define : {
-		timestamps : false
-	}
+    define: {
+        timestamps: false
+    }
 })
 
 sequelize.authenticate().then(() => {
@@ -30,16 +30,16 @@ const WeatherTypes = sequelize.define('weather_types', {
 })
 
 const Users = sequelize.define('users', {
-   name : {
-		type : Sequelize.STRING,
-		allowNull : false,
-		validate : {
-			len : [3,40]
-		},
-		set(value){
-			this.setDataValue('name', value.toLowerCase())
-		}
-	}
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        validate: {
+            len: [3, 40]
+        },
+        set(value) {
+            this.setDataValue('name', value.toLowerCase())
+        }
+    }
 })
 
 const Preferences = sequelize.define('preferences');
@@ -53,227 +53,521 @@ Preferences.belongsToMany(Users, { through: UserPreferences });
 
 const app = express()
 app.use(express.static(__dirname + '/public'))
-   .use(cors())
-   .use(cookieParser())
-   .use(bodyParser.json());
-
-var client_id = 'ed1ca454291b4e9b91b36f6d003c347c';
-var client_secret = 'fa0cd02ded7c45c7b55d563fa11f0559';
-var redirect_uri = 'https://my-project-irisalexandrescu.c9users.io/callback';
-
-var generateRandomString = function(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-  for (var i = 0; i < length; i++) {
-    text += possible.charAt(Math.floor(Math.random() * possible.length));
-  }
-  return text;
-};
-
-var stateKey = 'spotify_auth_state';
+    .use(cors())
+    .use(cookieParser())
+    .use(bodyParser.json());
 
 
-app.get('/login', function(req, res) {
-
-  var state = generateRandomString(16);
-  res.cookie(stateKey, state);
-
-  var scope = 'user-read-private user-read-email';
-  res.redirect('https://accounts.spotify.com/authorize?' +
-    querystring.stringify({
-      response_type: 'code',
-      client_id: client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state
-    }));
-});
-
-app.get('/callback', function(req, res) {
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
-
-  if (state === null || state !== storedState) {
-    res.redirect('/#' +
-      querystring.stringify({
-        error: 'state_mismatch'
-      }));
-  } else {
-    res.clearCookie(stateKey);
-    var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        code: code,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code'
-      },
-      headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-      },
-      json: true
-    };
-
-    request.post(authOptions, function(error, response, body) {
-      if (!error && response.statusCode === 200) {
-
-        var access_token = body.access_token,
-            refresh_token = body.refresh_token;
-
-        res.redirect('/#' +
-          querystring.stringify({
-            access_token: access_token,
-            refresh_token: refresh_token
-          }));
-      } else {
-        res.redirect('/#' +
-          querystring.stringify({
-            error: 'invalid_token'
-          }));
-      }
-    });
-  }
-});
-
-app.get('/refresh_token', function(req, res) {
-  var refresh_token = req.query.refresh_token;
-  var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token: refresh_token
-    },
-    json: true
-  };
-
-  request.post(authOptions, function(error, response, body) {
-    if (!error && response.statusCode === 200) {
-      var access_token = body.access_token;
-      res.send({
-        'access_token': access_token
-      });
-    }
-  });
-});
-
+//             ENDPOINTS SEQUELIZE
 
 app.get('/createdb', (request, response) => {
-    sequelize.sync({force:true}).then(() => {
+    sequelize.sync({ force: true }).then(() => {
         response.status(200).send('tables created')
     }).catch((err) => {
         console.log(err)
         response.status(200).send('could not create tables')
     })
 })
-app.post("/users",(request,response)=>{
-  Users.create(request.body).then((result)=>(response.status(201).json(result))).catch((err)=>{response.status(500).send("Error")
-  })
-})
-app.get("/users",(request,response)=>{
-  Users.findAll().then((result)=>{response.status(200).json(result)});
-})
-app.post("/weatherTypes",(request,response)=>{
-  WeatherTypes.bulkCreate([{
-		type:"cloudy"
-	},{
-		type : 'sunny'
-	},{
-		type : 'stormy'
-	}]).then((result)=>(response.status(201).json(result))).catch((err)=>{response.status(500).send("Error")})
-})
-app.get("/weatherTypes",(request,response)=>{
-  WeatherTypes.findAll().then((result)=>{response.status(200).json(result)}).catch((err)=>{response.status(500).send(err)});
+
+app.post('/users', (request, response) => {
+    const newUser = request.body.newUser;
+    Users.create(newUser).then(result => {
+        response.status(201).json(result);
+    }).catch(err => {
+        response.status(500).json(err);
+    })
 })
 
-app.post("/tags",(request,response)=>{
-  Tags.bulkCreate([{
-		name:"instrumental"
-	},{
-		name : 'house'
-	},{
-		name : 'rock'
-	}]).then((result)=>(response.status(201).json(result))).catch((err)=>{response.status(500).send("Error")})
+app.get('/users', (request, response) => {
+    Users.findAll().then(result => { 
+        response.status(200).json(result);
+    });
 })
 
-app.get("/tags",(request,response)=>{
-  Tags.findAll().then((result)=>{response.status(200).json(result)}).catch((err)=>{response.status(500).send(err)});
+app.put('/users/:userId', (request, response) => {
+    const userId = request.params.userId;
+    const newName = request.body.newName;
+    Users.find({ where: { id: userId }}).then(user => {
+        return user.update({name: newName});
+    }).then(updatedUser => {
+        response.status(200).json(updatedUser);
+    }).catch(err => {
+        response.status(500).json(err);
+    });
+})
+
+app.delete('/users/:userId', (request, response) => {
+    const userId = request.params.userId;
+    Users.find({ where: {id: userId}}).then(user => {
+        return user.destroy();
+    }).then(() => 
+        response.status(200).send('The user was succesfully deleted')
+    ).catch(err =>
+        response.status(500).json(err)
+    );
+    
 })
 
 
-app.post('/userPreferences', (req, res) =>{
-  const UserId = req.body.userId;
-  const WeatherId = req.body.weatherId
-  const TagId = req.body.tagId
-  let foundUser;
-  Users.find({where: { id : UserId }})
-  .then(user => {
-     foundUser = user;
-   return Preferences.findOrCreate({where: {tagId : TagId, weatherTypeId: WeatherId }})
-  }).then(preferences =>{
-    return foundUser.setPreferences(preferences[0]);
-  }).then(() => res.status(200).send("the user's preferences had been set"))
-    .catch((err) =>res.status(500).send(err))
-  
+app.post('/weatherTypes', (request, response) => {
+    const newTypes = request.body.newTypes;
+    WeatherTypes.bulkCreate(newTypes).then(result => {
+        response.status(201).json(result);
+    }).catch(err => { 
+        response.status(500).json(err);
+    })
 })
 
-//          --- endpoints ---
+app.get('/weatherTypes', (request, response) => {
+    WeatherTypes.findAll().then(result => {
+        response.status(200).json(result);
+    }).catch(err => { 
+        response.status(500).send(err);
+    });
+})
+
+app.put('/weatherTypes/:weatherTypeId', (request, response) =>{
+    const weatherTypeId = request.params.weatherTypeId;
+    const newType = request.body.newType;
+    WeatherTypes.findOne({where: { id: weatherTypeId}})
+    .then(updatedWeather => {
+        return updatedWeather.update({type: newType})
+    }).then((updatedWeather) => {
+        response.status(200).json(updatedWeather);
+    }).catch((err) => {
+        response.status(500).json(err)
+    })
+})
+
+app.delete('/weatherTypes/:weatherTypeId', (request, response) => {
+    const weatherTypeId = request.params.weatherTypeId;
+    WeatherTypes.findOne({where: {id: weatherTypeId}}).then(result => {
+        return result.destroy();
+    }).then(() => {
+        response.status(200).send('weather type succesfully deleted');
+    }).catch(err => { 
+        response.status(500).json(err);
+    });
+})
+
+
+app.post('/tags', (request, response) => {
+    const newTags = request.body.newTags;
+    Tags.bulkCreate(newTags).then(result => {
+        response.status(201).json(result);
+    }).catch(err => {
+        response.status(500).json(err);
+    })
+})
+
+app.get('/tags', (request, response) => {
+    Tags.findAll().then(result => { 
+        response.status(200).json(result);
+    }).catch(err => { 
+        response.status(500).json(err) 
+    });
+})
+
+app.put('/tags/:tagId', (request, response) =>{
+     const tagId = request.params.tagId;
+     const newTag = request.body.newTag;
+     Tags.findOne({where:{id: tagId}}).then((updatedTag) => {
+         return updatedTag.update({name: newTag});
+     }).then((updatedTag) => {
+         response.status(200).json(updatedTag);
+     }).catch((err) => {
+         response.status(500).json(err);
+     })
+    
+})
+
+app.delete('/tags/:tagId', (request, response) => {
+    const tagId = request.params.tagId;
+    Tags.find({where: { id: tagId }}).then(tag => {
+        return tag.destroy();
+    }).then(() => {
+        response.status(200).send('tag deleted');  
+    }).catch(err => {
+        response.status(500).json(err);
+    })
+})
+
+
+app.post('/preferences', (request, response) => {
+    const UserId = request.body.userId;
+    const newPreferences = request.body.newPreferences;
+    let foundUser;
+    Users.findOne({ where: { id: UserId } })
+        .then(user => {
+            foundUser = user;
+            return Preferences.bulkCreate(newPreferences, { ignoreDuplicates: true });
+        }).then(allPreferences => {
+            return foundUser.setPreferences(allPreferences);
+        }).then(() => response.status(200).send("the user's preferences have been set"))
+        .catch(err => response.status(500).send(err))
+})
+
+app.get('/preferences/:userId', (request, response) => {
+    const userId = request.params.userId;
+    Users.findOne({
+        where: {id: userId},
+        include: [{
+            model: Preferences, 
+            through: { where: { userId: userId }, attributes: [] } 
+        }]
+    }).then(result => {
+        return response.status(200).json(result);
+    }).catch(err => {
+        response.status(500).json(err);
+    })
+})
+
+//             SPOTIFY API ENDPOINTS
 
 const spotifySearchEndpoint = 'https://api.spotify.com/v1/search';
-
 app.get('/search', (req, res) => {
-  const searchTerm = req.query.term;
-  const searchGenre = req.query.genre;
-  if (searchTerm == undefined) {
-    res.status(400).send('One or more parameteres are missing!');
-    return;
-  }
-  let bearer = req.get('Authorization') || null;
-  if (!bearer) {
-    res.status(400).send('Authorization token not correct or missing!');
-    return;
-  }
-  let url;
-  if(searchGenre)
-    url = `${spotifySearchEndpoint}?q=${searchTerm} genre:${searchGenre}&type=track,album,artist&`;
-  else 
-    url = `${spotifySearchEndpoint}?q=${searchTerm}&type=track,album,artist&`
-  var searchOptions = {
-    url: url,
-    headers: {
-      'Authorization': bearer
+    const searchTerm = req.query.term;
+    const searchGenre = req.query.genre;
+    if (searchTerm == undefined) {
+        res.status(400).send('One or more parameteres are missing!');
+        return;
     }
-  }
-      
-  request.get(searchOptions, function(error, response, body) {
-    console.error(error);
-    const parsedBody = JSON.parse(body);
-    if(parsedBody.error) {
-      res.status(500).json(parsedBody.error);
-      return;
+    let bearer = req.get('Authorization') || null;
+    if (!bearer) {
+        res.status(400).send('Authorization token not correct or missing!');
+        return;
     }
-    try {
-      const resultTracks = [];
-      parsedBody.tracks.items.forEach(item => {
-        let track = {};
-        track.name = item.name;
-        track.duration = item.duration;
-        track.preview_url = item.preview_url;
-        track.artists = [];
-        track.image_url = item.album.images[1].url;
-        item.artists.forEach(artist => track.artists.push(artist.name));
-          resultTracks.push(track);
-      })
-      res.status(200).json(resultTracks);
-    } catch(ex) {
-      console.error(ex.stack);
-      res.status(500).send("There's been an error on the server");
+    let url;
+    if (searchGenre)
+        url = `${spotifySearchEndpoint}?q=${searchTerm} genre:${searchGenre}&type=track,album,artist`;
+    else
+        url = `${spotifySearchEndpoint}?q=${searchTerm}&type=track,album,artist`;
+    var searchOptions = {
+        url: url,
+        headers: {
+            'Authorization': bearer
+        }
     }
-  })
+
+    request.get(searchOptions, function (error, response, body) {
+        console.error(error);
+        const parsedBody = JSON.parse(body);
+        if (parsedBody.error) {
+            res.status(500).json(parsedBody.error);
+            return;
+        }
+        try {
+            const resultTracks = [];
+            parsedBody.tracks.items.forEach(item => {
+                let track = {};
+                track.name = item.name;
+                track.duration = item.duration;
+                track.preview_url = item.preview_url;
+                track.artists = [];
+                track.image_url = item.album.images[1].url;
+                item.artists.forEach(artist => track.artists.push(artist.name));
+                resultTracks.push(track);
+            })
+            res.status(200).json(resultTracks);
+        } catch (ex) {
+            console.error(ex.stack);
+            res.status(500).send("There's been an error on the server");
+        }
+    })
+})
+
+const spotifyPlaylistEndpoint = 'https://api.spotify.com/v1/me/playlists';
+app.get('/playlists', (req, res) => {
+    let bearer = req.get('Authorization') || null;
+    if (!bearer) {
+        res.status(400).send('Authorization token not correct or missing!');
+        return;
+    }
+    var searchOptions = {
+        url: spotifyPlaylistEndpoint,
+        headers: {
+            'Authorization': bearer
+        }
+    }
+
+    request.get(searchOptions, function (error, response, body) {
+        try {
+            const parsedBody = JSON.parse(body);
+            if (parsedBody.error) {
+                res.status(response.statusCode).json(parsedBody.error);
+                return;
+            }
+            res.status(200).json(parsedBody);
+        }
+        catch (ex) {
+            console.error(ex.stack);
+            res.status(500).send("There's been an error on the server");
+        }
+
+    })
+})
+
+const spotifyPutPlaylistEndpoint = 'https://api.spotify.com/v1/playlists';
+app.put('/playlists', (req, res) => {
+    let bearer = req.get('Authorization') || null;
+    if (!bearer) {
+        res.status(400).send('Authorization token not correct or missing!');
+        return;
+    }
+    const newPlaylistName = req.body.name;
+    const playlistId = req.body.playlistId;
+
+    var playlistUpdateOptions = {
+        url: spotifyPutPlaylistEndpoint + '/' + playlistId,
+        headers: {
+            'Authorization': bearer,
+            'Content-Type': 'application/json'
+        },
+        json: {
+            name: newPlaylistName,
+        }
+    }
+
+    request.put(playlistUpdateOptions, function (error, response, body) {
+        try {
+            if (response.statusCode !== 200) {
+                res.status(response.statusCode).send(body);
+            } else {
+                res.status(200).send('OK');
+            }
+        } catch (ex) {
+            console.error(ex.stack);
+            res.status(500).send("There's been an error on the server");
+        }
+    })
+})
+
+const playlistEndpoint = 'https://api.spotify.com/v1/playlists/';
+app.delete('/playlists', (req, res) => {
+    let bearer = req.get('Authorization') || null;
+    if (!bearer) {
+        res.status(400).send('Authorization token not correct or missing!');
+        return;
+    }
+
+    const playlistId = req.body.playlistId;
+    const trackURI = req.body.trackURI;
+    console.log(trackURI);
+    if (!trackURI) {
+        var playlistUpdateOptions = {
+            url: playlistEndpoint + playlistId + '/followers',
+            headers: {
+                'Authorization': bearer
+            }
+        }
+    }
+    else {
+        var playlistUpdateOptions = {
+            url: playlistEndpoint + playlistId + '/tracks',
+            headers: {
+                'Authorization': bearer,
+                'Content-Type': 'application/json'
+            },
+            json: {
+                tracks: [
+                    { "uri": trackURI }
+                ]
+            }
+        }
+    }
+    console.log(playlistUpdateOptions.url);
+    request.delete(playlistUpdateOptions, function (error, response, body) {
+        try {
+            if (response.statusCode !== 200) {
+                res.status(response.statusCode).send(body);
+            } else {
+                res.status(200).send('OK');
+            }
+        } catch (ex) {
+            console.error(ex.stack);
+            res.status(500).send("There's been an error on the server");
+        }
+    })
+})
+
+app.post('/playlists', (req, res) => {
+    let bearer = req.get('Authorization') || null;
+    if (!bearer) {
+        res.status(400).send('Authorization token not correct or missing!');
+        return;
+    }
+
+    const playlistId = req.body.playlistId;
+    const trackURI = req.body.uris;
+    console.log(trackURI);
+    var playlistUpdateOptions = {
+        url: playlistEndpoint + playlistId + '/tracks',
+        headers: {
+            'Authorization': bearer,
+            'Content-Type': 'application/json'
+        },
+        json: {
+            uris: [trackURI]
+        }
+    }
+
+    console.log(playlistUpdateOptions.url);
+    request.post(playlistUpdateOptions, function (error, response, body) {
+        try {
+            if (response.statusCode !== 200) {
+                res.status(response.statusCode).send(body);
+            } else {
+                res.status(200).send('OK');
+            }
+        } catch (ex) {
+            console.error(ex.stack);
+            res.status(500).send("There's been an error on the server");
+        }
+    })
+})
+
+const featuresEndpoint= 'https://api.spotify.com/v1/audio-features/';
+app.get('/features/:track_id', (req, res) => {
+    let bearer = req.get('Authorization') || null;
+    if (!bearer) {
+        res.status(400).send('Authorization token not correct or missing!');
+        return;
+    }
+    
+    const track_id = req.params.track_id;
+    if(!track_id) {
+        res.status(400).send('Track id parameter is missing!');
+        return;
+    }
+    
+    const featuresOptions = {
+        url: featuresEndpoint + track_id,
+        headers: {
+            'Authorization': bearer
+        }
+    }
+    
+    request.get(featuresOptions, function(error, response, body) {
+        console.log('body', body);
+        console.log('error', error);
+        try {
+            const parsedBody = JSON.parse(body);
+            if(body.error) {
+                res.status(response.statusCode).json(body.error);
+            } else {
+                res.status(200).send(parsedBody);
+            }
+        } catch (ex) {
+            console.error(ex.stack);
+            res.status(500).send("There's been an error on the server");
+        }
+    })
 })
 
 
+//       SPOTIFY INTEGRATION LOGIC
 
-console.log('Listening on 8080');
-app.listen(8080);
+var client_id = 'ed1ca454291b4e9b91b36f6d003c347c';
+var client_secret = 'fa0cd02ded7c45c7b55d563fa11f0559';
+var redirect_uri = 'https://my-project-irisalexandrescu.c9users.io/callback'; // MODIFY HERE WITH OWN REDIRECT-URI
+
+var generateRandomString = function (length) {
+    var text = '';
+    var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+};
+
+var stateKey = 'spotify_auth_state';
+
+app.get('/login', function (req, res) {
+
+    var state = generateRandomString(16);
+    res.cookie(stateKey, state);
+
+    var scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private';
+    res.redirect('https://accounts.spotify.com/authorize?' +
+        querystring.stringify({
+            response_type: 'code',
+            client_id: client_id,
+            scope: scope,
+            redirect_uri: redirect_uri,
+            state: state
+        }));
+});
+
+app.get('/callback', function (req, res) {
+    var code = req.query.code || null;
+    var state = req.query.state || null;
+    var storedState = req.cookies ? req.cookies[stateKey] : null;
+
+    if (state === null || state !== storedState) {
+        res.redirect('/#' +
+            querystring.stringify({
+                error: 'state_mismatch'
+            }));
+    } else {
+        res.clearCookie(stateKey);
+        var authOptions = {
+            url: 'https://accounts.spotify.com/api/token',
+            form: {
+                code: code,
+                redirect_uri: redirect_uri,
+                grant_type: 'authorization_code'
+            },
+            headers: {
+                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
+            },
+            json: true
+        };
+
+        request.post(authOptions, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+
+                var access_token = body.access_token,
+                    refresh_token = body.refresh_token;
+
+                res.redirect('/#' +
+                    querystring.stringify({
+                        access_token: access_token,
+                        refresh_token: refresh_token
+                    }));
+            } else {
+                res.redirect('/#' +
+                    querystring.stringify({
+                        error: 'invalid_token'
+                    }));
+            }
+        });
+    }
+});
+
+app.get('/refresh_token', function (req, res) {
+    var refresh_token = req.query.refresh_token;
+    var authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
+        form: {
+            grant_type: 'refresh_token',
+            refresh_token: refresh_token
+        },
+        json: true
+    };
+
+    request.post(authOptions, function (error, response, body) {
+        if (!error && response.statusCode === 200) {
+            var access_token = body.access_token;
+            res.send({
+                'access_token': access_token
+            });
+        }
+    });
+});
+
+
+app.listen(8080, function () {
+    console.log('Server started. Listening on 8080');
+});
