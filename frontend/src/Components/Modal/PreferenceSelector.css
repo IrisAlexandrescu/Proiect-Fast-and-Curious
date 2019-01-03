@@ -1,0 +1,12 @@
+.preference-option {
+    display: inline-block;
+}
+
+.preference-selector-container {
+    text-align: center!important;
+}
+
+ h5 {
+    color: #0063AF!important;
+    font-family: Quicksand!important;
+}
