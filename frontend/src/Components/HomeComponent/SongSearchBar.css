@@ -1,0 +1,20 @@
+.custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+    width: 400px;
+      background-color: #303138;
+      margin-top: 40px;
+    margin-left: 60px;
+}
+
+.custom-search-input input{
+    border: 0;
+    box-shadow: none;
+    background-color: #303138;
+    color: white;
+}
+.container{
+    margin-left: 50px;
+}

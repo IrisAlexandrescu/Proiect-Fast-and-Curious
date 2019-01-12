@@ -1,5 +1,6 @@
 import React from 'react';
 import './ContentContainer.css';
+import WeatherWidget from './WeatherWidget'
 
 class ContentContainer extends React.Component {
     constructor(props) {
@@ -8,8 +9,9 @@ class ContentContainer extends React.Component {
     
     render() {
         return (
-            <div className="content-container">
-                <h1>ContentContainer</h1>
+            <div className="container">
+            <div className="content-container"/>
+            <div className="nav-container"/> 
             </div>
         )
         

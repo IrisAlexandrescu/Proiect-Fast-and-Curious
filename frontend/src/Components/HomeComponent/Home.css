@@ -1,0 +1,56 @@
+.container{
+ display: flex;
+}
+.content-container{
+  background-color: #303138;
+    width:95%;
+    height: 100vh;
+    flex-basis:90%;
+    
+}
+.nav-container{
+     background-color: #2B789B;
+    width:50px;
+    height: 100vh;
+    flex-basis:10%;
+}
+.welcomemsg{
+    font-size: 40px;
+    padding-left: 90px;
+    padding-top: 15px;
+    color:white;
+}
+.todayrec{
+    font-size: 20px;
+    padding-left: 90px;
+    padding-top: 0px;
+    color:white;
+}
+.container-part1{
+    float: left;
+    width:60%;
+}
+.container-part2{
+    float: right;
+    margin-right: 40px;
+    margin-top: 30px;
+
+}
+.whitebar{
+    width: 135vh;
+    height: 3px;
+    background-color: white;
+    margin-top: 320px;
+}
+.card-section{
+    margin-top: 50px;
+    width: 135vh;
+    height: 300px;
+    
+}
+.whitebar2{
+    width: 135vh;
+    height: 3px;
+    background-color: white;
+    margin-bottom : 20px;
+}

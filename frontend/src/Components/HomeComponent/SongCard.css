@@ -1,0 +1,12 @@
+.btn1{float: left;
+     width: 30px;
+    height: 50px;
+    padding: 10px;
+}
+
+.btn2{float:right;
+    width: 30px;
+    height: 50px;
+        padding: 10px;
+}
+.cardimg{height: 300px;}

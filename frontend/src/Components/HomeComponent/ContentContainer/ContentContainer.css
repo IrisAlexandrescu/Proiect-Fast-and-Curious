@@ -1,0 +1,18 @@
+.container{
+ display: flex;
+}
+.content-container{
+  background-color: #303138;
+    width:95%;
+    height: 100vh;
+    flex-basis:90%;
+    
+}
+.nav-container{
+     background-color: #2B789B;
+    width:50px;
+    height: 100vh;
+    flex-basis:10%;
+    
+    
+}

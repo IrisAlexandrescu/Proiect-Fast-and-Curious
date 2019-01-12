@@ -1,6 +1,20 @@
 .weather-widget {
+    padding-top: 20px;
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    margin-left: 40px;
+}
+.degrees{
+    color:white;
+    font-size: 20px;
+}
+.todaywth{
+    color: white;
+    font-size: 20px;
+}
+img{
+    width: 100px;
+    height: 80px;
 }

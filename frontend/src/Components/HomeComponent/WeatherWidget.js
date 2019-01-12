@@ -61,9 +61,9 @@ class WeatherWidget extends React.Component {
         const { width, height } = this.props;
         return (
             <div className='weather-widget'>
+               <p className="degrees">{temperature} °C </p>
                 <img src={`${iconPath}/${icon}`} alt={icon} width={width} height={height} />
-                <h1>{temperature} °C </h1>
-                <h4>It's {summary} today</h4>
+                <p className="todaywth">It's {summary} today</p>
             </div>
         )
     }
