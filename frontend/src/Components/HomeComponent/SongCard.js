@@ -1,39 +1,72 @@
 import React from 'react';
 import {Card, Button, CardImg, CardTitle, CardText, CardGroup,
- CardSubtitle, CardBody } from 'reactstrap';
+ CardSubtitle, CardBody, CardLink, Row, Col, Media } from 'reactstrap';
+import add from '../../button-images/add.png';
+import love from '../../button-images/love.png';
+
+
+
 const SongCard = (props) => {
   return (
     <CardGroup >
       <Card>
-        <CardImg className="cardimg"top width="20%"src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
-        <CardBody>
-          <CardTitle>Song Name</CardTitle>
-          <Button className="btn1">Button</Button>
-          <Button className="btn2">Button</Button>
-        </CardBody>
-      </Card>
-      <Card>
-        <CardImg className="cardimg" top width="100%" height="50px" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
+        <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
         <CardBody>
           <CardTitle>Card title</CardTitle>
-         <Button className="btn1">Button</Button>
-          <Button className="btn2">Button</Button>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+          <Row>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-plus"></span></Button></a></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-heart"></span></Button></a></Col>
+          </Row>
         </CardBody>
       </Card>
       <Card>
-        <CardImg className="cardimg" top width="100%" height="50px" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
+        <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
         <CardBody>
-          <CardTitle>Song Name</CardTitle>
-         <Button className="btn1">Button</Button>
-          <Button className="btn2">Button</Button>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+          <Row>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-plus"></span></Button></a></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-heart"></span></Button></a></Col>
+          </Row>
         </CardBody>
       </Card>
       <Card>
-        <CardImg className="cardimg" top width="100%"  height="50px"src="https://placeholdit.imgix.net/~text?txtsize=33&txt=256%C3%97180&w=256&h=180" alt="Card image cap" />
+        <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
         <CardBody>
-            <CardTitle>Song Name</CardTitle>
-          <Button className="btn1">Button</Button>
-          <Button className="btn2">Button</Button>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+          <Row>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-plus"></span></Button></a></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-heart"></span></Button></a></Col>
+          </Row>
+        </CardBody>
+      </Card>
+      <Card>
+        <CardImg top width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97180&w=318&h=180" alt="Card image cap" />
+        <CardBody>
+          <CardTitle>Card title</CardTitle>
+          <CardSubtitle>Card subtitle</CardSubtitle>
+          <CardText>Some quick example text to build on the card title and make up the bulk of the card's content.</CardText>
+          <Row>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-plus"></span></Button></a></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col></Col>
+          <Col><a href={"#"}><Button><span class="glyphicon glyphicon-heart"></span></Button></a></Col>
+          </Row>
         </CardBody>
       </Card>
     </CardGroup>
