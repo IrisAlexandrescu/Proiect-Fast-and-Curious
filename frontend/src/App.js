@@ -10,7 +10,8 @@ class App extends Component {
     this.state = {
       loggedIn: false,
       addedPreferences: false,
-      access_token: ''
+      access_token: '',
+      refresh_token: ''
     }
     
     this.finishAddingPreferences = () => {
@@ -26,6 +27,7 @@ class App extends Component {
       this.setState({
         loggedIn: true,
         addedPreferences: true,
+        refresh_token: spotifyTokenObj.refresh_token,
         access_token: spotifyTokenObj.access_token
       })
     } else {
@@ -35,7 +37,7 @@ class App extends Component {
       if (access_token && refresh_token) {
         this.setState({
           loggedIn: true,
-          
+          refresh_token,
           access_token
         })
       }
@@ -58,7 +60,8 @@ class App extends Component {
         {this.state.loggedIn && !this.state.addedPreferences && 
           <PreferencesModal buttonLabel="Open" className="test-class" 
             access_token={this.state.access_token} finishAddingPreferences={this.finishAddingPreferences} />}
-        {this.state.loggedIn && this.state.addedPreferences && <Home access_token={this.state.access_token} />}
+        {this.state.loggedIn && this.state.addedPreferences && 
+          <Home access_token={this.state.access_token} refresh_token={this.state.refresh_token} />}
       </div>
     );
   }
