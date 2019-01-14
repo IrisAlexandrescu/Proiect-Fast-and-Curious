@@ -3,17 +3,37 @@ import SideNavbar from './SideNavbar';
 import WeatherWidget from './WeatherWidget';
 import './Home.css';
 import SongSearchBar from './SongSearchBar';
-import SongCard from './SongCard'
+import SongCardsList from './SongCardsList'
+import axios from 'axios';
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            displayedSongs: []
+        }
+        this.getInitialSongs = () => {
+            const searchURL = window.location.href.split('/').slice(0,-1).join('/') + ':8081/search?term=metallica';
+            
+            const headers = {
+                Authorization: `Bearer ${this.props.access_token}`
+            }
+            axios.get(searchURL,{ headers }).then(response => {
+                this.setState({
+                    displayedSongs: response.data
+                })
+            })
+        }
+    }
+    
+    componentDidMount() {
+        this.getInitialSongs();
     }
     
     render() {
         return (
             <div className="container">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"/>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous"/>
 
             
             <div className="content-container">
@@ -28,7 +48,7 @@ class Home extends React.Component {
             <div className="whitebar">
             </div>
               <div className="card-section">
-            <SongCard />
+            <SongCardsList displayedSongs={this.state.displayedSongs} />
             </div>
               <div className="whitebar2">
             </div>

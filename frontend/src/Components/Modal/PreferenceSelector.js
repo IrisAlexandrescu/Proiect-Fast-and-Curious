@@ -64,7 +64,7 @@ const PreferenceSelector = (props) => {
                     value = {props.selectedPreferences}
                     closeMenuOnSelect = {closeMenuOnSelect}
                     components = {{ Option }}
-                    options = {preferenceOptions}
+                    options = {props.tags}
                     onChange = {props.handleChange}
                     isMulti = {true}
                 />

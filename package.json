@@ -9,6 +9,7 @@
     "cors": "^2.8.4",
     "express": "~4.16.0",
     "material-ui-search-bar": "^0.4.2",
+    "morgan": "^1.9.1",
     "mysql2": "^1.6.4",
     "nodemon": "^1.18.6",
     "querystring": "~0.2.0",

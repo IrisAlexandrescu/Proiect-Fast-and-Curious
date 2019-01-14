@@ -5,7 +5,7 @@ var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const Sequelize = require('sequelize')
-
+const logger = require('morgan');
 const sequelize = new Sequelize('spotify_database', 'root', '', {
     dialect: "mysql",
     host: "localhost",
@@ -42,7 +42,11 @@ const Users = sequelize.define('users', {
     }
 })
 
-const Preferences = sequelize.define('preferences');
+const Preferences = sequelize.define('preferences', { id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  }}); 
 const UserPreferences = sequelize.define('user_preferences');
 
 Tags.belongsToMany(WeatherTypes, { through: Preferences });
@@ -55,14 +59,58 @@ const app = express()
 app.use(express.static(__dirname + '/public'))
     .use(cors())
     .use(cookieParser())
-    .use(bodyParser.json());
+    .use(bodyParser.json())
+    .use(logger());
 
+
+const newTags = [
+		{"name": "calmness"},
+		{"name": "chill"},
+		{"name": "classic"},
+		{"name": "dance"},
+		{"name": "dark"},
+		{"name": "electronic"},
+		{"name": "energy"},
+		{"name": "focus"},
+		{"name": "gaming"},
+		{"name": "happy"},
+		{"name": "instrumental"},
+		{"name": "lounge"},
+		{"name": "oldschool"},
+		{"name": "party"},
+		{"name": "positive-vibes"},
+		{"name": "quiet"},
+		{"name": "romance"},
+		{"name": "sadness"},
+		{"name": "sentimental"},
+		{"name": "soft"},
+		{"name": "uplifting"},
+		{"name": "workout"}
+	]
+	
+	const weatherTypes = [
+	    {"type":"snowy"},
+	    {"type":"sunny"},
+	    {"type":"cloudy"},
+	    {"type":"rainy"}
+	]
 
 //             ENDPOINTS SEQUELIZE
 
 app.get('/createdb', (request, response) => {
     sequelize.sync({ force: true }).then(() => {
-        response.status(200).send('tables created')
+        WeatherTypes.bulkCreate(weatherTypes).then(wtResults => {
+            Tags.bulkCreate(newTags, {returning: true}).then(tagResult => {
+                const wtResultArray = [];
+                wtResults.forEach(wt => {
+                    wt.setTags(tagResult, {returning: true}).then(final => {
+                        wtResultArray.push(final);
+                    })
+                })
+                response.status(201).json({wtResults, tagResult, wtResultArray});    
+                        
+            })
+        })
     }).catch((err) => {
         console.log(err)
         response.status(200).send('could not create tables')
@@ -71,8 +119,8 @@ app.get('/createdb', (request, response) => {
 
 app.post('/users', (request, response) => {
     const newUser = request.body.newUser;
-    Users.create(newUser).then(result => {
-        response.status(201).json(result);
+    Users.create(newUser).then(userResult => {
+        response.status(201).json(userResult);
     }).catch(err => {
         response.status(500).json(err);
     })
@@ -107,7 +155,6 @@ app.delete('/users/:userId', (request, response) => {
     );
     
 })
-
 
 app.post('/weatherTypes', (request, response) => {
     const newTypes = request.body.newTypes;
@@ -196,11 +243,21 @@ app.delete('/tags/:tagId', (request, response) => {
 app.post('/preferences', (request, response) => {
     const UserId = request.body.userId;
     const newPreferences = request.body.newPreferences;
+    let tagsIds = [], weatherTypesIds = [];
+    newPreferences.forEach(pref => {
+        tagsIds.push(pref.tagId);
+        weatherTypesIds.push(pref.weatherTypeId);
+    })
     let foundUser;
     Users.findOne({ where: { id: UserId } })
         .then(user => {
             foundUser = user;
-            return Preferences.bulkCreate(newPreferences, { ignoreDuplicates: true });
+            return Preferences.findAll({
+                where: {
+                    tagId: tagsIds,
+                    weatherTypeId: weatherTypesIds
+                }
+            });
         }).then(allPreferences => {
             return foundUser.setPreferences(allPreferences);
         }).then(() => response.status(200).send("the user's preferences have been set"))
@@ -469,7 +526,8 @@ app.get('/features/:track_id', (req, res) => {
 
 var client_id = 'ed1ca454291b4e9b91b36f6d003c347c';
 var client_secret = 'fa0cd02ded7c45c7b55d563fa11f0559';
-var redirect_uri = 'https://my-project-irisalexandrescu.c9users.io/callback'; // MODIFY HERE WITH OWN REDIRECT-URI
+var base_url = 'https://my-project-irisalexandrescu.c9users.io';
+var redirect_uri = base_url + ':8081/callback'; // MODIFY HERE WITH OWN REDIRECT-URI
 
 var generateRandomString = function (length) {
     var text = '';
@@ -530,7 +588,7 @@ app.get('/callback', function (req, res) {
                 var access_token = body.access_token,
                     refresh_token = body.refresh_token;
 
-                res.redirect('/#' +
+                res.redirect(base_url + '/#' +
                     querystring.stringify({
                         access_token: access_token,
                         refresh_token: refresh_token

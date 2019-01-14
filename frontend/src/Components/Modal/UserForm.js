@@ -8,11 +8,13 @@ const UserForm = (props) => {
             <FormGroup>
                 <Label>Enter your name:</Label>
                 <Input
+                    onChange={props.handleUsernameChange}
+                    value={props.username}
                     type="text"
                     name="name"
                     id="username"
                     placeholder="John Doe"
-            />
+                />
             </FormGroup>
         </div>
     );
