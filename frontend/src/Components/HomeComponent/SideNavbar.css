@@ -58,4 +58,15 @@
 .static:hover {
   opacity:0;
 }
+.img1{
+    width: 75px;
+}
+.img2{
+    width: 80px;
+}
+.img3{
+    width: 85px;
+    height: 80px;
+    padding-top: 5px;
+}
     

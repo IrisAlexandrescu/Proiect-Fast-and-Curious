@@ -9,20 +9,20 @@ class SideNavbar extends React.Component {
     }
     
   render() {
+  	       const playlistimg = require('./home-images/' + 'playlist' + '.png')
+          const graphimg = require('./home-images/' + 'graph' + '.png')
+          const singout = require('./home-images/' + 'singout' + '.png')
   return(
  <div class="sidebar">
 			    <div class="w3-sidebar w3-bar-block"> 
 					<div class="w3-bar-item w3-button" name="pensula_btn" id="pensula_btn">
-						<label for="button-1" id="checkboxLabel1" title="Button1">   </label>
-						<input type="checkbox" class="checkbox" id="button-1" />
+						 <img className="img1" width="20px"height="20px" src={playlistimg}/>
 					</div>
 					<div class="w3-bar-item w3-button" name="linie_btn" id="linie_btn">
-						<label for="button-2" id="checkboxLabel2" title="Button2">    </label>
-						<input type="checkbox" class="checkbox" id="button-2" />
+						<img className="img2" width="20px"height="20px" src={graphimg}/>
 					</div>
 					<div class="w3-bar-item w3-button">
-						<label for="button-3" id="checkboxLabel3" title="Button3">   </label>
-						<input type="checkbox" class="checkbox" id="button-3" /> 
+						<img className="img3" width="20px"height="20px" src={singout}/>
 					</div>
 					<a href={""}><div class="settings-button"><img class="static" src={settings} /><img class="active" src="https://loading.io/spinners/gear/lg.config-gear-loading-icon.gif"/></div></a>
 			    </div>
