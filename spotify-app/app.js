@@ -409,8 +409,8 @@ app.delete('/playlists', (req, res) => {
         return;
     }
 
-    const playlistId = req.body.playlistId;
-    const trackURI = req.body.trackURI;
+    const playlistId = req.query.playlistId;
+    const trackURI = req.query.trackURI;
     console.log(trackURI);
     if (!trackURI) {
         var playlistUpdateOptions = {

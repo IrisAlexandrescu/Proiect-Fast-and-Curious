@@ -61,16 +61,21 @@ class Home extends React.Component {
             <div className="container-part2">
               <WeatherWidget/>
             </div>
-              <div className="whitebar">
-              </div>
-              <div className="card-section">
-            <SongCardsList displayedSongs={this.state.displayedSongs} />
+            <div className="whitebar">
+            </div>
+            <div className="card-section">
+              <SongCardsList 
+                displayedSongs={this.state.displayedSongs}
+                access_token={this.props.access_token}
+                playlists={this.state.playlists}
+                getUserPlaylists={this.getUserPlaylists}
+                />
             </div>
             </div>
             <div className="nav-container"> 
-            <SideNavbar/>
+              <SideNavbar access_token={this.props.access_token} playlists={this.state.playlists} getUserPlaylists={this.getUserPlaylists}/>
             </div>
-            </div>
+          </div>
         )
     }
 }

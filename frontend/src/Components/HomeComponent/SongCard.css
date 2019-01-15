@@ -1,4 +1,4 @@
-.static-buttons {
+.song-card-container .static-buttons {
     position: absolute;
     bottom:0px;
     left: 0px;
@@ -7,17 +7,19 @@
     background-color: black;
 }
 
-.static-buttons img {
+.song-card-container .static-buttons img {
     display: inline;
 
 }
 
-.card img { 
-    height: 300px; 
-    width: 100%;
+
+
+.song-card-container img { 
+    height: 300px !important; 
+    width: 300px !important;
 }
 
-.card {
+.song-card-container {
     margin: 15px;
 }
 

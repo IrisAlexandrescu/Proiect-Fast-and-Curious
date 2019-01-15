@@ -67,8 +67,9 @@ class SongCard extends React.Component {
       axios.post(playlistsURL, {playlistId, uri:trackUri}, { headers }).then(response => {
           this.setState({
             addTrackToPlaylistSuccess: true,
-          })
-
+          });
+          this.props.getUserPlaylists();
+          
       }).catch(ex => console.log(ex))
     }
   }

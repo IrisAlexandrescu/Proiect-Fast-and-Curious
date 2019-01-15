@@ -20,6 +20,7 @@ const SongCardsList = (props) => {
         access_token={props.access_token}
         playlists={props.playlists}
         trackUri={song.uri}
+        getUserPlaylists={props.getUserPlaylists} 
         />
       )})
   return (
