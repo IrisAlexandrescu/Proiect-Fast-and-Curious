@@ -1,3 +1,31 @@
+# Instalare și rularea aplicației
+----
+
+1. Clonarea Proiectului
+ ```
+git clone https://github.com/IrisAlexandrescu/Proiect-Fast-and-Curious.git
+```   
+ 
+2. Pornirea serverului mysql
+```
+mysql-ctl start
+```
+3. Crearea unei baze de date cu numele spotify_database
+
+4. Instalarea dependințelor în directoarele `/frontend/` și `/spotify-app/` cu 
+```
+npm install 
+```
+
+5. Modificarea URL-ului de redirect `base_url`
+
+6. Pornirea proceselor de server `npm start` și `node app.js`
+
+7. Accesarea rutei pentru crearea și popularea tabelelor
+`{base_url}:8081/createdb`
+
+----
+
 # Aplicație pentru managementul melodiilor favorite integrată cu Spotify
 
 ----
