@@ -87,6 +87,7 @@ class PreferencesModal extends React.Component {
         const localTokenObj = {
           timestamp: new Date(),
           access_token: this.props.access_token,
+          refresh_token: this.props.refresh_token,
           user: response.data,
         }
         

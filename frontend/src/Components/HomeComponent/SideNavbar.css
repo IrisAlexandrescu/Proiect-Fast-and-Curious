@@ -1,15 +1,39 @@
     
 .w3-sidebar{
-            float:left;
-            overflow: hidden;
-            height: 100%;
-            width: 100%;
-            background-image: -webkit-linear-gradient(#005470, #00283C);
-            background-image: -moz-linear-gradient(#005470, #00283C);
-            background-image: -o-linear-gradient(#005470, #00283C);
-            background-image: linear-gradient(#005470, #00283C);
-        }
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+    background-image: -webkit-linear-gradient(#005470, #00283C);
+    background-image: -moz-linear-gradient(#005470, #00283C);
+    background-image: -o-linear-gradient(#005470, #00283C);
+    background-image: linear-gradient(#005470, #00283C);
+}
+
+.w3-sidebar svg {
+    margin: 35px 0;
+    cursor: pointer;
+}
+
+.playlist-details {
+    margin: 0 0 0 35px;
+}
+
+li.playlist-item {
+    display: flex!important;
+    justify-content: space-between;
+}
+
+.playlist-item-content {
+    display: flex!important;
+}
+
+span.playlist-track-details {
+    align-self: end;
+}
+  
 .w3-button{
             color: #8C001A;
         }

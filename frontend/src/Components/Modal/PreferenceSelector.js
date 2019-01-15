@@ -2,31 +2,6 @@ import React from 'react';
 import Select, {components} from 'react-select';
 import './PreferenceSelector.css';
 
-
-const preferenceOptions = [
-    { value:'calmness', label: 'Calmness'},    
-    { value:'chill', label: 'Chill'},
-    { value:'classic', label: 'Classical'},
-    { value:'dance', label: 'Dance'},
-    { value:'dark', label: 'Dark'},
-    { value:'electronic', label: 'Electronic'},
-    { value:'energy', label: 'Energy'},
-    { value:'focus', label: 'Focus'},
-    { value:'gaming', label: 'Gaming'},
-    { value:'happy', label: 'Happy'},
-    { value:'instrumental', label: 'Instrumental'},
-    { value:'lounge', label: 'Lounge'},
-    { value:'party', label: 'Party'},
-    { value:'positive-vibes', label: 'Positive vibes'},
-    { value:'quiet', label: 'Quiet'},
-    { value:'romance', label: 'Romance'},
-    { value:'sadness', label: 'Sadness'},
-    { value:'sentimental', label: 'Emotional'},
-    { value:'soft', label: 'Soft'},
-    { value:'uplifting', label: 'Uplifting'},
-    { value:'workout', label: 'Workout'}
-]
-
 const customStyles = {
   control: base => ({
     ...base,

@@ -296,9 +296,9 @@ app.get('/search', (req, res) => {
     }
     let url;
     if (searchGenre)
-        url = `${spotifySearchEndpoint}?q=${searchTerm} genre:${searchGenre}&type=track,album,artist`;
+        url = `${spotifySearchEndpoint}?q=${searchTerm} genre:${searchGenre}&type=track`;
     else
-        url = `${spotifySearchEndpoint}?q=${searchTerm}&type=track,album,artist`;
+        url = `${spotifySearchEndpoint}?q=${searchTerm}&type=track`;
     var searchOptions = {
         url: url,
         headers: {
@@ -322,6 +322,8 @@ app.get('/search', (req, res) => {
                 track.preview_url = item.preview_url;
                 track.artists = [];
                 track.image_url = item.album.images[1].url;
+                track.id = item.id;
+                track.uri = item.uri;
                 item.artists.forEach(artist => track.artists.push(artist.name));
                 resultTracks.push(track);
             })
@@ -455,7 +457,7 @@ app.post('/playlists', (req, res) => {
     }
 
     const playlistId = req.body.playlistId;
-    const trackURI = req.body.uris;
+    const trackURI = req.body.uri;
     console.log(trackURI);
     var playlistUpdateOptions = {
         url: playlistEndpoint + playlistId + '/tracks',

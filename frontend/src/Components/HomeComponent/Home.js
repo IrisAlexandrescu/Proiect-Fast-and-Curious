@@ -10,7 +10,11 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            displayedSongs: []
+            displayedSongs: [],
+            features: {},
+            featuresModal: false,
+            selectedTrack: {},
+            playlists: []
         }
         this.getInitialSongs = () => {
             const searchURL = window.location.href.split('/').slice(0,-1).join('/') + ':8081/search?term=metallica';
@@ -21,34 +25,45 @@ class Home extends React.Component {
             axios.get(searchURL,{ headers }).then(response => {
                 this.setState({
                     displayedSongs: response.data
-                })
+                });
+            })
+        }
+        this.getUserPlaylists = () => {
+            const playlistsURL = window.location.href.split('/').slice(0,-1).join('/') + ':8081/playlists';
+            
+            const headers = {
+                Authorization: `Bearer ${this.props.access_token}`
+            }
+            axios.get(playlistsURL,{ headers }).then(response => {
+                this.setState({
+                    playlists: response.data.items
+                });
             })
         }
     }
     
     componentDidMount() {
         this.getInitialSongs();
+        this.getUserPlaylists();
     }
     
     render() {
-        return (
-            <div className="container">
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossOrigin="anonymous"/>
-
-            
-            <div className="content-container">
+      return (
+        <div className = "container">
+                
+          <div className="content-container">
             <div className="container-part1">
             <p className="welcomemsg">Hello there</p>
             <p className="todayrec">Here are today's recommendations for you:</p>
             </div>
             <div className="container-part2">
-            <WeatherWidget/>
+              <WeatherWidget/>
             </div>
-            <div className="whitebar">
-            </div>
+              <div className="whitebar">
+              </div>
               <div className="card-section">
-            <SongCardsList displayedSongs={this.state.displayedSongs} />
-            </div>
+                <SongCardsList displayedSongs={this.state.displayedSongs} access_token={this.props.access_token} playlists={this.state.playlists} />
+              </div>
               <div className="whitebar2">
             </div>
             <p className="welcomemsg1">Search for your favourite songs</p>
@@ -63,3 +78,4 @@ class Home extends React.Component {
     }
 }
 export default Home;
+

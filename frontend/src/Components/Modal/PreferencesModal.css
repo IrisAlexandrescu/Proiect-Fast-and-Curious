@@ -17,7 +17,7 @@ input#username {
     background-color: #3C4345!important;
     border-color:#626E70!important; 
 }
-button {
+.modal-class button {
     padding: 10px 25px!important;
     font-family: Quicksand;
 }
