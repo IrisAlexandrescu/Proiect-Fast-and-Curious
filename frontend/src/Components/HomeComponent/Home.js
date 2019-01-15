@@ -39,6 +39,7 @@ class Home extends React.Component {
                     playlists: response.data.items
                 });
             })
+           
         }
     }
     
@@ -48,11 +49,12 @@ class Home extends React.Component {
     }
     
     render() {
-      return (
-        <div className = "container">
-                
-          <div className="content-container">
+
+        return (
+            <div className="container">
+            <div className="content-container">
             <div className="container-part1">
+             <SongSearchBar class="song-src" access_token={this.props.access_token} />
             <p className="welcomemsg">Hello there</p>
             <p className="todayrec">Here are today's recommendations for you:</p>
             </div>
@@ -62,13 +64,8 @@ class Home extends React.Component {
               <div className="whitebar">
               </div>
               <div className="card-section">
-                <SongCardsList displayedSongs={this.state.displayedSongs} access_token={this.props.access_token} playlists={this.state.playlists} />
-              </div>
-              <div className="whitebar2">
+            <SongCardsList displayedSongs={this.state.displayedSongs} />
             </div>
-            <p className="welcomemsg1">Search for your favourite songs</p>
-             <SongSearchBar access_token={this.props.access_token} />
-             <div className="whitebar3"/>
             </div>
             <div className="nav-container"> 
             <SideNavbar/>

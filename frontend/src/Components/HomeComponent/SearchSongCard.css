@@ -1,0 +1,37 @@
+.static-buttons {
+    position: absolute;
+    bottom:0px;
+    left: 0px;
+    width: 150px;
+    height: 100%;
+    background-color: black;
+}
+
+.static-buttons img {
+    display: inline;
+    margin-left: 80px;
+    margin-top: 20px;
+
+}
+
+.card img {height: 150px; max-width: 500px;}
+
+.card {
+    margin: 15px;
+}
+.btncard{
+    width: 100px!important;
+    height: 50px!important;
+    margin-left: 230px;
+}
+.cardimg{
+    margin-left: 0px !important;
+    margin-top: 0px;
+    width: 50px;
+    height: 200px;
+}
+.srccard
+{
+    width: 400px!important;
+    margin-left: 200px;
+}
