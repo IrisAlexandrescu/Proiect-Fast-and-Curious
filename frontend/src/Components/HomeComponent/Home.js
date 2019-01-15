@@ -38,7 +38,6 @@ class Home extends React.Component {
             
             <div className="content-container">
             <div className="container-part1">
-            <SongSearchBar />
             <p className="welcomemsg">Hello there</p>
             <p className="todayrec">Here are today's recommendations for you:</p>
             </div>
@@ -52,14 +51,15 @@ class Home extends React.Component {
             </div>
               <div className="whitebar2">
             </div>
+            <p className="welcomemsg1">Search for your favourite songs</p>
+             <SongSearchBar access_token={this.props.access_token} />
+             <div className="whitebar3"/>
             </div>
             <div className="nav-container"> 
             <SideNavbar/>
             </div>
             </div>
-
         )
     }
 }
-
 export default Home;
