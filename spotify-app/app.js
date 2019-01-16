@@ -6,6 +6,8 @@ var cookieParser = require('cookie-parser');
 const bodyParser = require("body-parser");
 const Sequelize = require('sequelize')
 const logger = require('morgan');
+const axios = require('axios');
+
 const sequelize = new Sequelize('spotify_database', 'root', '', {
     dialect: "mysql",
     host: "localhost",
@@ -334,6 +336,166 @@ app.get('/search', (req, res) => {
         }
     })
 })
+
+
+
+function removeDuplicates(arr){
+    let unique_array = []
+    for(let i = 0;i < arr.length; i++){
+        if(unique_array.indexOf(arr[i]) == -1){
+            unique_array.push(arr[i])
+        }
+    }
+    return unique_array
+}
+
+function getPlaylistsForCategory(category) {
+    return `https://api.spotify.com/v1/browse/categories/${category}/playlists`;
+}
+
+
+const spotifyBrowseEndpoint = 'https://api.spotify.com/v1/browse/categories';
+app.get('/recommendations', (req, res) => {
+    // preferintele se vor trimite ca string-uri, intr-un query numit preferences, separate prin virgula
+    let preferences = req.query.preferences.split(",");
+    if (preferences == undefined) {
+        res.status(400).send('One or more parameteres are missing!');
+        return;
+    }
+    
+    let bearer = req.get('Authorization') || null;
+    if (!bearer) {
+        res.status(400).send('Authorization token not correct or missing!');
+        return;
+    }
+    let categoriesToBrowse = [];
+    let playlistsToBrowse = [];
+    if( preferences.includes('calmness') || preferences.includes('chill') 
+        || preferences.includes('focus') || preferences.includes('quiet') || preferences.includes('soft')) {
+            categoriesToBrowse.push('chill');
+            categoriesToBrowse.push('focus');
+            categoriesToBrowse.push('sleep');
+            categoriesToBrowse.push('mood');
+            playlistsToBrowse.push('chill');
+            playlistsToBrowse.push('quiet');
+        }
+    
+    if (preferences.includes('classical') || preferences.includes('instrumental')) {
+        categoriesToBrowse.push('classical');
+        playlistsToBrowse.push('piano');
+        playlistsToBrowse.push('guitar');
+    }
+    
+    if (preferences.includes('gaming')) {
+        categoriesToBrowse.push('gaming');
+    }
+    
+    if (preferences.includes('workout')) {
+        categoriesToBrowse.push('workout');
+    }
+    
+    if (preferences.includes('dance') || preferences.includes('electronic')) {
+        categoriesToBrowse.push('edm_dance');
+    }
+    
+    if (preferences.includes('party')) {
+        categoriesToBrowse.push('party');
+    }
+    
+    if (preferences.includes('workout')) {
+        categoriesToBrowse.push('workout');
+    }
+    
+    if (preferences.includes('oldschool')) {
+        categoriesToBrowse.push('hiphop');
+        playlistsToBrowse.push('gold');
+        playlistsToBrowse.push('90');
+    }
+    
+    if (preferences.includes('lounge')) {
+        categoriesToBrowse.push('jazz');
+        categoriesToBrowse.push('blues');
+    }
+    
+    if (preferences.includes('happy') || preferences.includes('positive-vibes')
+        || preferences.includes('uplifting') || preferences.includes('energy')) {
+        categoriesToBrowse.push('mood');
+        playlistsToBrowse.push('feeling good');
+        playlistsToBrowse.push('happy');
+        playlistsToBrowse.push('energy');
+        playlistsToBrowse.push('boost');
+    }
+    
+    if (preferences.includes('romance') || preferences.includes('sentimental')) {
+        categoriesToBrowse.push('romance');
+    }
+    
+    if (preferences.includes('dark') || preferences.includes('sadness')) {
+        categoriesToBrowse.push('mood');
+        categoriesToBrowse.push('romance');
+        playlistsToBrowse.push('life sucks');
+        playlistsToBrowse.push('sad');
+        playlistsToBrowse.push('broken');
+    }
+    
+    categoriesToBrowse = removeDuplicates(categoriesToBrowse);
+    playlistsToBrowse = removeDuplicates(playlistsToBrowse);
+    const headers = {
+        Authorization: bearer,
+    }
+    let categoriesRequests = categoriesToBrowse.map(categ => axios.get(getPlaylistsForCategory(categ), {headers}));
+    Promise.all(categoriesRequests).then(result => {
+        console.log('first promise all');
+        let allPlaylists = [];
+        result.forEach(item => {
+            let random = Math.random() >= 0.5;
+            if (random) {
+                let firstPlaylists = item.data.playlists.items.filter(pl => {
+                    for(let i = 0; i < playlistsToBrowse.length; i++) {
+                        let p = playlistsToBrowse[i];
+                        if(pl.name.toLowerCase().indexOf(p) > 0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                    
+                });
+                allPlaylists.push(...firstPlaylists);
+            } else {
+                random = Math.min(parseInt(Math.random() * 10), item.data.playlists.items.length - 3);
+                let firstPlaylists = item.data.playlists.items.slice(random, random+2);
+                allPlaylists.push(...firstPlaylists);
+            }
+        });
+        console.log('allPlaylists length='+ allPlaylists.length);
+
+        let trackRequests = allPlaylists.map(p => axios.get(p.tracks.href, {headers}));
+        let allTracks = [];
+        Promise.all(trackRequests).then(secondResult => {
+            console.log('second promise all');
+            
+            secondResult.forEach(trackResult => {
+                let random = Math.min(parseInt(Math.random() * 10), trackResult.data.items.length - 5);
+                let firstTracks = trackResult.data.items.slice(random,random+4);
+                allTracks.push(...firstTracks);
+            })
+            console.log('allTracks length='+ allTracks.length);
+            const finalTracks = allTracks.map(t => {
+                const { id, uri, name, duration_ms, preview_url } = t.track;
+                let artists = t.track.artists.map(a => a.name);
+                let image_url = t.track.album.images ? t.track.album.images[0].url : 'http://placekitten.com/300/300';
+                return {
+                    id, uri, name, duration_ms, artists, image_url, preview_url
+                }
+            })
+            res.json(finalTracks);
+        })
+    })
+    
+})
+
+
 
 const spotifyPlaylistEndpoint = 'https://api.spotify.com/v1/me/playlists';
 app.get('/playlists', (req, res) => {

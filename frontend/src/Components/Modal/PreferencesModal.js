@@ -24,7 +24,6 @@ class PreferencesModal extends React.Component {
       modalPage: 0,
       selectedPreferences : {},
       username: '',
-      tags: [],
       weatherTypes: [],
       user: {}
     }
@@ -96,28 +95,6 @@ class PreferencesModal extends React.Component {
       
     }
     
-    this.getTags = () => {
-      const tagsURL = window.location.href.split('/').slice(0,-1).join('/') + ':8081/tags';
-      axios.get(tagsURL).then(response => {
-        const tags = [];
-        response.data.forEach(tag => {
-          const value = tag.name.split(' ').join('-');
-          const label = tag.name;
-          const { id } = tag;
-          const tagObj = {
-            id,
-            value,
-            label
-          };
-          tags.push(tagObj);
-        })
-        this.setState({
-          tags
-        })
-        
-      })
-    }
-    
     this.getWeatherTypes = () => {
       const weatherTypesURL = window.location.href.split('/').slice(0,-1).join('/') + ':8081/weatherTypes';
       axios.get(weatherTypesURL).then(response => {
@@ -172,7 +149,7 @@ class PreferencesModal extends React.Component {
             
             { modalPage > 0 && modalPage < 5  &&
                 <PreferenceSelector 
-                  tags = {this.state.tags}
+                  tags = {this.props.tags}
                   selectedPreferences = {selectedPreferences[modalPage]}
                   handleChange = {this.handleChange}
                   weatherType = {WeatherTypes[modalPage].type}

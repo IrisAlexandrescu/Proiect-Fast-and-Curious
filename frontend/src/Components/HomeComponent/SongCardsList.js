@@ -6,7 +6,11 @@ import SongCard from './SongCard.js';
 
 const SongCardsList = (props) => {
   const responsive = {
-    0: { items: 5 },
+    0: { items: 1 },
+    650: { items: 2 },
+    1000: { items: 3 },
+    1350: { items: 4 },
+    1800: { items: 5 },
   };
   const cards = props.displayedSongs.map((song, i) => {
     return (

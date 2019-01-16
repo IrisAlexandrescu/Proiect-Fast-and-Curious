@@ -31,6 +31,10 @@
 .song-card-container .song-action-buttons {
     width: 100%;
     justify-content: space-around;
+    display: none;
+}
+
+.song-card-container:hover .song-action-buttons {
     display: flex;
 }
 
@@ -54,12 +58,9 @@
     display: block;
     width: 100%;
     text-align: center;
-    background: rgba(0,0,0, 0.4);
-}
-
-.song-card-container h5,
-.song-card-container h6 {
-    color: white!important;
+    color: #0063AF!important;
+    font-family: Quicksand!important;
+    font-weight: bold;
 }
 
 .song-card-container {
@@ -67,5 +68,10 @@
     align-items: center;
     background-color: none;
     width: 250px;
-    height: 250px;
+    height: 400px;
+    background: none!important;
+}
+
+.card-img-overlay {
+    background-color:none !important;
 }

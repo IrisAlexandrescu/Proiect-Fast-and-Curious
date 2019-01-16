@@ -5,16 +5,21 @@
     flex-direction: column;
     align-items: center;
     margin-left: 40px;
+    border: 1px solid gray;
+
+padding: 0 22px;
+
+border-radius: 20px;
 }
 .degrees{
-    color:white;
+    color:#0063AF!important;
     font-size: 20px;
 }
 .todaywth{
-    color: white;
+    color:#0063AF !important;
     font-size: 20px;
 }
 img{
-    width: 100px;
-    height: 80px;
+    width: 150px;
+    height: 90px;
 }

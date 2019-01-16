@@ -12,7 +12,8 @@ class App extends Component {
       loggedIn: false,
       addedPreferences: false,
       access_token: '',
-      refresh_token: ''
+      refresh_token: '',
+      tags: []
     }
     
     this.finishAddingPreferences = () => {
@@ -20,6 +21,28 @@ class App extends Component {
         addedPreferences: true,
       })
     } 
+    
+    this.getTags = () => {
+      const tagsURL = window.location.href.split('/').slice(0,-1).join('/') + ':8081/tags';
+      axios.get(tagsURL).then(response => {
+        const tags = [];
+        response.data.forEach(tag => {
+          const value = tag.name.split(' ').join('-');
+          const label = tag.name;
+          const { id } = tag;
+          const tagObj = {
+            id,
+            value,
+            label
+          };
+          tags.push(tagObj);
+        })
+        this.setState({
+          tags
+        })
+        
+      })
+    }
     
     this.refreshToken = () => {
       const spotifyTokenObj = JSON.parse(window.localStorage.getItem('spotify_token'));
@@ -66,7 +89,7 @@ class App extends Component {
       
       window.location.hash = '';
     }
-    
+    this.getTags();
   }
   
   log() {
@@ -80,9 +103,12 @@ class App extends Component {
         {!this.state.loggedIn && <button onClick={this.log}>Login with Spotify</button>}
         {this.state.loggedIn && !this.state.addedPreferences && 
           <PreferencesModal buttonLabel="Open" className="modal-class" 
-            access_token={this.state.access_token} refresh_token={this.state.refresh_token} finishAddingPreferences={this.finishAddingPreferences} />}
+            access_token={this.state.access_token} 
+            refresh_token={this.state.refresh_token} 
+            finishAddingPreferences={this.finishAddingPreferences} 
+            tags={this.state.tags}/>}
         {this.state.loggedIn && this.state.addedPreferences && 
-          <Home access_token={this.state.access_token} refresh_token={this.state.refresh_token} />}
+          <Home access_token={this.state.access_token} refresh_token={this.state.refresh_token} tags={this.state.tags}/>}
       </div>
     );
   }

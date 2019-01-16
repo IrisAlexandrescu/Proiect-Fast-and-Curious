@@ -14,8 +14,9 @@ class SongCard extends React.Component {
       featuresPopoverOpen: false,
       features: null,
       playlistModal: false,
-      addTrackToPlaylistSuccess: false,
+      addTrackToPlaylistSuccess: false
     };
+    
     this.getTrackFeatures = () => {
       if(!window.featuresMouseoverLock ) {
         window.featuresMouseoverLock = true; 
@@ -106,17 +107,19 @@ class SongCard extends React.Component {
           
           <CardImg top src={imgSrc} alt={title} />
           <CardImgOverlay>
-            <Row className="song-title">
-              <CardTitle>{title}</CardTitle>
-              <CardSubtitle>{subtitle}</CardSubtitle>
-            </Row>
+            
             <Row className="song-action-buttons">
               <FontAwesomeIcon icon={faPlus} color="white" onMouseOver={this.onMouseOverIcons} onClick={this.togglePlaylisModal} />
               <FontAwesomeIcon icon={faHeart} color="white" onMouseOver={this.onMouseOverIcons} />
             </Row>
           </CardImgOverlay>
+          <Row className="song-title">
+              <CardTitle>{title}</CardTitle>
+              <CardSubtitle>{subtitle}</CardSubtitle>
+            </Row>
         </Card>
-        <Popover trigger="focus" placement="bottom" isOpen={this.state.featuresPopoverOpen} target={`card-${this.props.id}`} toggle={this.state.toggleFeaturesPopover}>
+        <Popover trigger="focus" placement="bottom" isOpen={this.state.featuresPopoverOpen} 
+          target={`card-${this.props.id}`} toggle={this.state.toggleFeaturesPopover} delay={{show: 3000, hide: 3000}}>
           <PopoverHeader>Audio features for {title}</PopoverHeader>
           <PopoverBody>
             { hasFeatures && <div>

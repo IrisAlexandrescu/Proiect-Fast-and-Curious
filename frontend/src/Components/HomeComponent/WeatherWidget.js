@@ -23,16 +23,27 @@ class WeatherWidget extends React.Component {
                 .then((response) => {
                     let { summary, temperature, icon } = response.data.currently;
                     let iconName = '';
+                    
+                    
+                    
                     icon = icon.toLowerCase();
+                    let currentWeatherTypeId;
                     if (icon.includes('cloud') || icon === 'wind' || icon === 'fog') {
                         iconName = 'cloudy.svg';
+                        currentWeatherTypeId=3;
                     } else if (icon === 'snow' || icon === 'sleet') {
                         iconName = 'snowy.svg';
+                        currentWeatherTypeId=1;
                     } else if (icon === 'rain') {
                         iconName = 'rainy.svg';
+                        currentWeatherTypeId=4;
                     } else if (icon.includes('clear')) {
                         iconName = 'sunny.svg';
+                        currentWeatherTypeId=2;
                     }
+                    
+                    this.props.getInitialSongs(currentWeatherTypeId);
+
                     temperature = Math.round((temperature - 32) / 1.8);
                     this.setState({
                         summary,
@@ -56,7 +67,7 @@ class WeatherWidget extends React.Component {
             <div className='weather-widget'>
                <p className="degrees">{temperature} °C </p>
                 <img src={`${iconPath}/${iconName}`} alt={iconName} width={width} height={height} />
-                <p className="todaywth">It's {summary} today</p>
+                <p className="todaywth">Today's weather: {summary}</p>
             </div>
         )
     }

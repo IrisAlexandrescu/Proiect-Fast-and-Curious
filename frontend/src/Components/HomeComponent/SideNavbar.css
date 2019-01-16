@@ -24,6 +24,7 @@
 li.playlist-item {
     display: flex!important;
     justify-content: space-between;
+    background-color: #3C4345!important;
 }
 
 .playlist-item-content {
