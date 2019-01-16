@@ -690,7 +690,7 @@ app.get('/features/:track_id', (req, res) => {
 
 var client_id = 'ed1ca454291b4e9b91b36f6d003c347c';
 var client_secret = 'fa0cd02ded7c45c7b55d563fa11f0559';
-var base_url = 'https://fast-and-curious-andreeabajenaru.c9users.io';
+var base_url = 'https://my-project-irisalexandrescu.c9users.io';
 var redirect_uri = base_url + ':8081/callback'; // MODIFY HERE WITH OWN REDIRECT-URI
 
 var generateRandomString = function (length) {

@@ -1,0 +1,74 @@
+diff --git a/frontend/src/Components/HomeComponent/SongSearchBar.css b/frontend/src/Components/HomeComponent/SongSearchBar.css
+index 0c8964a..716105d 100644
+--- a/frontend/src/Components/HomeComponent/SongSearchBar.css
++++ b/frontend/src/Components/HomeComponent/SongSearchBar.css
+@@ -53,3 +53,8 @@
+   float: left!important;
+   margin-left: 20px;
+ }
++
++
++.cardimg.card-img-top {
++  height: 350px!important;
++}
+\ No newline at end of file
+diff --git a/frontend/src/Components/HomeComponent/SongSearchBar.js b/frontend/src/Components/HomeComponent/SongSearchBar.js
+index 6127dfe..aa0eb0f 100644
+--- a/frontend/src/Components/HomeComponent/SongSearchBar.js
++++ b/frontend/src/Components/HomeComponent/SongSearchBar.js
+@@ -51,16 +51,15 @@ class SongSearchBar extends React.Component {
+                 this.setState({
+                     displayedSongs: response.data
+                 })
+-            })
+-            let listsongs=[];
+-             const cards = this.state.displayedSongs.map((song, i) => {
+-               let songname=song.name
+-               listsongs.push({"label":song.name,"value":i});
+-             })
+-             this.setState({options:listsongs});
++                let listsongs=[];
++                const cards = this.state.displayedSongs.map((song, i) => {
++                  let songname=song.name
++                  listsongs.push({"label":song.name,"value":i});
++                })
++                this.setState({options:listsongs});
+             
+-                  this.toggle();
+-             
++                this.toggle();
++            })
+            
+       }
+    }
+@@ -84,11 +83,12 @@ class SongSearchBar extends React.Component {
+            <Select className="select-search"options={this.state.options} onChange={this.ChangeOpt}  />
+           </ModalHeader>
+           <ModalBody>
+-        {this.state.currentImgSrc&&this.state.currentTitle&& <SongCard 
+-        imgSrc={this.state.currentImgSrc} 
+-        title={this.state.currentTitle} 
+-        subtitle={this.currentSubtitle} 
+-        />}
++        {this.state.currentImgSrc&&this.state.currentTitle&& 
++            <SongCard 
++            imgSrc={this.state.currentImgSrc} 
++            title={this.state.currentTitle} 
++            subtitle={this.state.currentSubtitle} 
++            />}
+           </ModalBody>
+           <ModalFooter>
+              <Button color="primary" >Add</Button>
+diff --git a/spotify-app/app.js b/spotify-app/app.js
+index b694eab..c83ccd1 100644
+--- a/spotify-app/app.js
++++ b/spotify-app/app.js
+@@ -690,7 +690,7 @@ app.get('/features/:track_id', (req, res) => {
+ 
+ var client_id = 'ed1ca454291b4e9b91b36f6d003c347c';
+ var client_secret = 'fa0cd02ded7c45c7b55d563fa11f0559';
+-var base_url = 'https://fast-and-curious-andreeabajenaru.c9users.io';
++var base_url = 'https://my-project-irisalexandrescu.c9users.io';
+ var redirect_uri = base_url + ':8081/callback'; // MODIFY HERE WITH OWN REDIRECT-URI
+ 
+ var generateRandomString = function (length) {

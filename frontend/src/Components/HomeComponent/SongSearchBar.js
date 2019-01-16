@@ -51,14 +51,23 @@ class SongSearchBar extends React.Component {
                 this.setState({
                     displayedSongs: response.data
                 })
+<<<<<<< HEAD
              let listsongs=[];
+=======
+                let listsongs=[];
+>>>>>>> 7d94223b8c69a1a4980c15b88c97f431359a1073
                 const cards = this.state.displayedSongs.map((song, i) => {
                   let songname=song.name
                   listsongs.push({"label":song.name,"value":i});
                 })
                 this.setState({options:listsongs});
+<<<<<<< HEAD
              
                   this.toggle();
+=======
+            
+                this.toggle();
+>>>>>>> 7d94223b8c69a1a4980c15b88c97f431359a1073
             })
            
       }
