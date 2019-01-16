@@ -25,10 +25,17 @@ li.playlist-item {
     display: flex!important;
     justify-content: space-between;
     background-color: #3C4345!important;
+    height:110px;
 }
 
 .playlist-item-content {
     display: flex!important;
+}
+
+.playlist-item-content-tracks{
+    margin-top:50px;
+    display: flex!important;
+    margin-left:-100px;
 }
 
 span.playlist-track-details {

@@ -91,7 +91,10 @@ class SideNavbar extends React.Component {
 			return (
 				<ListGroupItem className="playlist-item" key={`track-item-${track.id}`}>
 				
-					<iframe src={playURL} className="playlist-track-details" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"/>
+<div className="playlist-item-content-tracks">
+						<iframe src={playURL} width="700" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"/>
+
+</div>
 
 				<span className="playlist-track-details">
 					<FontAwesomeIcon icon={faTrash} color="red" onClick={() => this.deleteTrackFromPlaylist(track.uri, track.parentPlaylistId)} />
