@@ -64,12 +64,18 @@
 }
 
 .song-card-container {
+    margin-left: 130px !important;
     border: none !important;
     align-items: center;
     background-color: none;
     width: 250px;
     height: 400px;
     background: none!important;
+}
+
+iframe {
+    margin-top: -50px;
+    margin-left: 105px;
 }
 
 .card-img-overlay {

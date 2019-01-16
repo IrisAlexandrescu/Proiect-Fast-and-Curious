@@ -125,7 +125,7 @@ class PreferencesModal extends React.Component {
   }
   
   componentDidMount() {
-    this.getTags();
+
     this.getWeatherTypes();
   }
   

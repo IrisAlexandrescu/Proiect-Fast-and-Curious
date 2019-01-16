@@ -1,2 +1,40 @@
 @import url('https://fonts.googleapis.com/css?family=Cabin|Oswald|Quicksand|Thasadith');
 
+.container{
+    display:flex;
+}
+
+.content{
+    background-image: url("button-images/spotify_img.jpeg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    width: auto !important;
+    height: 1170px;
+    flex-basis:100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    
+}
+
+.title{
+    font-size: 90px;
+    margin-left: 35%;
+    margin-top: 100px;
+    color: 	white;
+    margin-bottom: 200px;
+}
+
+.buttonApp{
+    background-color: #1db954;
+    width: 10%;
+    height: 60px;
+    margin-left: 45%;
+    margin-top: 50px;
+    margin-bottom:  200px;
+    border: 2px solid #1db954;
+    border-radius: 15px 25px;
+}
+

@@ -132,6 +132,9 @@ class SideNavbar extends React.Component {
 	}
 	
   render() {
+  	
+  	//const playURL = "https://open.spotify.com/embed/track/" +uri.split(":")[2];
+  	
   	let playlistsElements;
   	if (this.props.playlists && this.props.playlists.length > 0) {
   		playlistsElements = this.props.playlists.map(this.createPlaylistElement);
@@ -158,6 +161,7 @@ class SideNavbar extends React.Component {
             <ListGroup>
             	{!this.state.showingTracksForPlaylist && playlistsElements}
             	{this.state.showingTracksForPlaylist && trackElements}
+           
             </ListGroup>
           </ModalBody>
           <ModalFooter>

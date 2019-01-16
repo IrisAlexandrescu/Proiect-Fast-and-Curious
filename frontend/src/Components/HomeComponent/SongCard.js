@@ -33,7 +33,7 @@ class SongCard extends React.Component {
       }
       
       const featuresURL = window.location.href.split('/').slice(0,-1).join('/') + ':8081/features/' + this.props.id;
-            
+      
       const headers = {
         Authorization: `Bearer ${this.props.access_token}`
       };
@@ -77,7 +77,11 @@ class SongCard extends React.Component {
   
   
   render() {
-    const { title, subtitle, imgSrc} = this.props;
+    const { title, subtitle, imgSrc, trackUri} = this.props;
+    
+    // this is a hack - sue Andreea
+    const playURL = "https://open.spotify.com/embed/track/" + trackUri.split(":")[2];
+    
     const hasFeatures = this.state.features != null;
     let duration, minutes, seconds;
     if (hasFeatures) {
@@ -97,15 +101,15 @@ class SongCard extends React.Component {
     }
     
     return (
-      <div>
+      <div className="whatever-card">
         <Card onDragStart={this.props.handleOnDragStart} 
           className="song-card-container"
-          id={`card-${this.props.id}`}
+          
           onMouseOver={this.getTrackFeatures}
           onMouseOut={this.toggleFeaturesPopover}
-        >
+        > 
           
-          <CardImg top src={imgSrc} alt={title} />
+          <CardImg top id={`card-${this.props.id}`} src={imgSrc} alt={title} />
           <CardImgOverlay>
             
             <Row className="song-action-buttons">
@@ -113,13 +117,12 @@ class SongCard extends React.Component {
               <FontAwesomeIcon icon={faHeart} color="white" onMouseOver={this.onMouseOverIcons} />
             </Row>
           </CardImgOverlay>
-          <Row className="song-title">
-              <CardTitle>{title}</CardTitle>
-              <CardSubtitle>{subtitle}</CardSubtitle>
-            </Row>
+
         </Card>
-        <Popover trigger="focus" placement="bottom" isOpen={this.state.featuresPopoverOpen} 
-          target={`card-${this.props.id}`} toggle={this.state.toggleFeaturesPopover} delay={{show: 3000, hide: 3000}}>
+        <iframe src={playURL} width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+
+        <Popover trigger="focus" placement="top" isOpen={this.state.featuresPopoverOpen} 
+          target={`card-${this.props.id}`} toggle={this.state.toggleFeaturesPopover} delay={{show: 100, hide: 100}}>
           <PopoverHeader>Audio features for {title}</PopoverHeader>
           <PopoverBody>
             { hasFeatures && <div>

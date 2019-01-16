@@ -99,8 +99,10 @@ class App extends Component {
   }
   render() {
     return (
-      <div>
-        {!this.state.loggedIn && <button onClick={this.log}>Login with Spotify</button>}
+       <div className="container">
+        <div className="content">
+        <p className="title">Fast and Curious</p>
+        {!this.state.loggedIn && <button onClick={this.log} className="buttonApp">Login with Spotify</button>}
         {this.state.loggedIn && !this.state.addedPreferences && 
           <PreferencesModal buttonLabel="Open" className="modal-class" 
             access_token={this.state.access_token} 
@@ -109,6 +111,7 @@ class App extends Component {
             tags={this.state.tags}/>}
         {this.state.loggedIn && this.state.addedPreferences && 
           <Home access_token={this.state.access_token} refresh_token={this.state.refresh_token} tags={this.state.tags}/>}
+      </div>
       </div>
     );
   }
