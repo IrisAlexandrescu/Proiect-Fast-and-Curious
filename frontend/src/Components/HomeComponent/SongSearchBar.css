@@ -53,3 +53,6 @@
   float: left!important;
   margin-left: 20px;
 }
+.cardimg.card-img-top {
+  height: 350px!important;
+}

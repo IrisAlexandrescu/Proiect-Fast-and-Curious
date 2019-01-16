@@ -51,16 +51,15 @@ class SongSearchBar extends React.Component {
                 this.setState({
                     displayedSongs: response.data
                 })
-            })
-            let listsongs=[];
-             const cards = this.state.displayedSongs.map((song, i) => {
-               let songname=song.name
-               listsongs.push({"label":song.name,"value":i});
-             })
-             this.setState({options:listsongs});
-            
-                  this.toggle();
+             let listsongs=[];
+                const cards = this.state.displayedSongs.map((song, i) => {
+                  let songname=song.name
+                  listsongs.push({"label":song.name,"value":i});
+                })
+                this.setState({options:listsongs});
              
+                  this.toggle();
+            })
            
       }
    }
@@ -84,11 +83,12 @@ class SongSearchBar extends React.Component {
            <Select className="select-search"options={this.state.options} onChange={this.ChangeOpt}  />
           </ModalHeader>
           <ModalBody>
-        {this.state.currentImgSrc&&this.state.currentTitle&& <SongCard 
-        imgSrc={this.state.currentImgSrc} 
-        title={this.state.currentTitle} 
-        subtitle={this.currentSubtitle} 
-        />}
+        {this.state.currentImgSrc&&this.state.currentTitle&& 
+            <SongCard 
+            imgSrc={this.state.currentImgSrc} 
+            title={this.state.currentTitle} 
+            subtitle={this.state.currentSubtitle} 
+            />}
           </ModalBody>
           <ModalFooter>
              <Button color="primary" >Add</Button>

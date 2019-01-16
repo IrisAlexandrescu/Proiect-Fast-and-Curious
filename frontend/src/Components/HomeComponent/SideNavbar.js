@@ -1,5 +1,5 @@
 import React from "react";
-import './SideNavbar.css'
+import './SideNavbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMusic, faSignOutAlt, faLock, faLockOpen, faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, ListGroupItem, ListGroup } from 'reactstrap';
@@ -86,16 +86,13 @@ class SideNavbar extends React.Component {
       let minutes = Math.floor(duration / 60);
       let seconds = parseInt(duration % 60);
       duration = `${minutes}m ${seconds}s`;
+      let playURL = "https://open.spotify.com/embed/track/" + track.uri.split(":")[2];
+      
 			return (
 				<ListGroupItem className="playlist-item" key={`track-item-${track.id}`}>
-				<div className="playlist-item-content">
-					<img src={track.imageUrl} alt={`Album cover for ${track.name}`} width="300px" height="300px" />
-					<div className="playlist-details">
-						<h5>{track.name}</h5>
-						<h6>{track.artists}</h6>
-						<span>{duration}</span>
-					</div>
-				</div>
+				
+					<iframe src={playURL} className="playlist-track-details" width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"/>
+
 				<span className="playlist-track-details">
 					<FontAwesomeIcon icon={faTrash} color="red" onClick={() => this.deleteTrackFromPlaylist(track.uri, track.parentPlaylistId)} />
 				</span>
@@ -133,8 +130,6 @@ class SideNavbar extends React.Component {
 	
   render() {
   	
-  	//const playURL = "https://open.spotify.com/embed/track/" +uri.split(":")[2];
-  	
   	let playlistsElements;
   	if (this.props.playlists && this.props.playlists.length > 0) {
   		playlistsElements = this.props.playlists.map(this.createPlaylistElement);
@@ -159,10 +154,9 @@ class SideNavbar extends React.Component {
           </ModalHeader>
           <ModalBody>
             <ListGroup>
-            	{!this.state.showingTracksForPlaylist && playlistsElements}
-            	{this.state.showingTracksForPlaylist && trackElements}
-           
-            </ListGroup>
+            {!this.state.showingTracksForPlaylist && playlistsElements}
+            {this.state.showingTracksForPlaylist && trackElements}
+          </ListGroup>
           </ModalBody>
           <ModalFooter>
           	{!this.state.showingTracksForPlaylist && <Button color="secondary" onClick={this.toggle}>Close</Button>}
